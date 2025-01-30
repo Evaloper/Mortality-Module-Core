@@ -6,7 +6,7 @@ export default class MetadataApiClass extends BaseApiClass {
       this.baseUrl,
       this.username,
       this.password,
-      "/api/me?fields=*,settings,organisationUnits[id,displayName]",
+      "/api/me?fields=*,settings,organisationUnits%5Bid,displayName%5D",
       {
         paging: false
       },
@@ -82,7 +82,7 @@ export default class MetadataApiClass extends BaseApiClass {
       {
         paging: false
       },
-      ["withinUserHierarchy=true", "fields=id,code,displayName,path,children[id,code,displayName,path]"]
+      ["withinUserHierarchy=true", "fields=id,code,displayName,path,children%5Bid,code,displayName,path%5D "]
     );
     const me = await pull(
       this.baseUrl,
@@ -171,6 +171,11 @@ export default class MetadataApiClass extends BaseApiClass {
   }
 
   async getProgramMetadata(program) {
+
+  //   if (program === "u95entEeZ0q") {
+  //     console.log("Trackingggg");
+  //     program = "u95entEeZ0q";
+  // }
     const p = await pull(
       this.baseUrl,
       this.username,
@@ -180,9 +185,18 @@ export default class MetadataApiClass extends BaseApiClass {
         paging: false
       },
       [
-        "fields=id,displayName,sharing,userGroupAccesses,trackedEntityType,organisationUnits[id,displayName,code,path,attributeValues],programRuleVariables[name,programRuleVariableSourceType,dataElement,trackedEntityAttribute],programTrackedEntityAttributes[mandatory,displayInList,searchable,trackedEntityAttribute[id,displayName,displayFormName,displayShortName,valueType,optionSet[id],unique]],programStages[id,displayName,programStageDataElements[displayInReports,sortOrder,compulsory,dataElement[id,displayName,displayFormName,displayShortName,description,valueType,optionSet[id]]"
+        // "fields=id,displayName,sharing,userGroupAccesses,trackedEntityType,organisationUnits[id,displayName,code,path,attributeValues],programRuleVariables[name,programRuleVariableSourceType,dataElement,trackedEntityAttribute],programTrackedEntityAttributes[mandatory,displayInList,searchable,trackedEntityAttribute[id,displayName,displayFormName,displayShortName,valueType,optionSet[id],unique]],programStages[id,displayName,programStageDataElements[displayInReports,sortOrder,compulsory,dataElement[id,displayName,displayFormName,displayShortName,description,valueType,optionSet[id]]"
+
+        "fields=id,displayName,sharing,userGroupAccesses,trackedEntityType,organisationUnits%5Bid,displayName,code,path,attributeValues%5D,programRuleVariables%5Bname,programRuleVariableSourceType,dataElement,trackedEntityAttribute%5D,programTrackedEntityAttributes%5Bmandatory,displayInList,searchable,trackedEntityAttribute%5Bid,displayName,displayFormName,displayShortName,valueType,optionSet%5Bid%5D,unique%5D%5D,programStages%5Bid,displayName,programStageDataElements%5BdisplayInReports,sortOrder,compulsory,dataElement%5Bid,displayName,displayFormName,displayShortName,description,valueType,optionSet%5Bid%5D%5D"
       ]
+
+    
+   
     );
+
+    console.log("Doneeeee    -----Trackingggg");
+
+
     const programRules = await pull(
       this.baseUrl,
       this.username,
@@ -191,7 +205,7 @@ export default class MetadataApiClass extends BaseApiClass {
       {
         paging: false
       },
-      [`filter=program.id:eq:${program}`, `fields=*,programRuleActions[*]`]
+      [`filter=program.id:eq:${program}`, `fields=*,programRuleActions%5B*%5D`]
     );
     const optionSets = await pull(
       this.baseUrl,
@@ -201,7 +215,7 @@ export default class MetadataApiClass extends BaseApiClass {
       {
         paging: false
       },
-      ["fields=id,displayName,options[id,displayName,code,sortOrder]"]
+      ["fields=id,displayName,options%5Bid,displayName,code,sortOrder%5D"]
     );
     const programMetadata = {};
     programMetadata.id = p.id;
@@ -285,7 +299,7 @@ export default class MetadataApiClass extends BaseApiClass {
       {
         paging: false
       },
-      ["fields=id,displayName,access,organisationUnits[id,displayName,path]", "filter=access.read:eq:true"]
+      ["fields=id,displayName,access,organisationUnits%5Bid,displayName,path%5D", "filter=access.read:eq:true"]
     );
   }
 
